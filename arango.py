@@ -13,7 +13,7 @@ if not sys_db.has_database('test'):
 
 # Connect to "test" database as root user.
 # This returns an API wrapper for "test" database.
-db = client.db('test', username='root', password='ashu1995')
+db = client.db('test', username='root', password='ashu1995')########
 
 # Create a new collection named "students" if it does not exist.
 # This returns an API wrapper for "students" collection.
