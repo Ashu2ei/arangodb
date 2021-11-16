@@ -1,40 +1,32 @@
-from arango import ArangoClient
+from pyArango.connection import *
 
-# Initialize the ArangoDB client.
-client = ArangoClient(hosts='http://192.168.0.34:8529')#IP OF THE WIFI
+conn = Connection(arangoURL='http://192.168.0.34:8529' ,username="root", password="ashu1995")
 
-# Connect to "_system" database as root user.
-# This returns an API wrapper for "_system" database.
-sys_db = client.db('_system', username='root', password='ashu1995')
+#db = conn.createDatabase(name="school")
 
-# Create a new database named "test" if it does not exist.
-if not sys_db.has_database('test'):
-    sys_db.create_database('test')
+print(dir(conn.databases['school']))
+# db = conn["school"]
 
-# Connect to "test" database as root user.
-# This returns an API wrapper for "test" database.
-db = client.db('test', username='root', password='ashu1995')########
+# studentsCollection = db.createCollection(name="student")
 
-# Create a new collection named "students" if it does not exist.
-# This returns an API wrapper for "students" collection.
-if db.has_collection('students'):
-    students = db.collection('students')
-else:
-    students = db.create_collection('students')
+# doc1 = studentsCollection.createDocument()
+# doc1["name"] = "John Smith"
+# doc2 = studentsCollection.createDocument()
+# doc2["firstname"] = "Emily"
 
-# Add a hash index to the collection.
-students.add_hash_index(fields=['name'], unique=False)
+# doc2["lastname"] = "Bronte"
+# doc1._key = "johnsmith"
+# doc1.save()
 
-# Truncate the collection.
-students.truncate()
+# students = [('Oscar', 'Wilde', 3.5), ('Thomas', 'Hobbes', 3.2), 
+# ('Mark', 'Twain', 3.0), ('Kate', 'Chopin', 3.8), ('Fyodor', 'Dostoevsky', 3.1), 
+# ('Jane', 'Austen',3.4), ('Mary', 'Wollstonecraft', 3.7), ('Percy', 'Shelley', 3.5), 
+# ('William', 'Faulkner', 3.8), ('Charlotte', 'Bronte', 3.0)]
 
-# Insert new documents into the collection.
-students.insert({'name': 'jane', 'age': 19})
-students.insert({'name': 'josh', 'age': 18})
-students.insert({'name': 'jake', 'age': 21})
-
-# Execute an AQL query. This returns a result cursor.
-cursor = db.aql.execute('FOR doc IN students RETURN doc')
-
-# Iterate through the cursor to retrieve the documents.
-student_names = [document['name'] for document in cursor]
+# for (first, last, gpa) in students:
+#     doc = studentsCollection.createDocument()
+#     doc['name'] = "%s %s" % (first, last)
+#     doc['gpa'] = gpa 
+#     doc['year'] = 2017
+#     doc._key = ''.join([first, last]).lower() 
+#     doc.save()
